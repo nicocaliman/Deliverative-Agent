@@ -18,7 +18,7 @@ class AStar:
         #es que ese sucesor ya está en la frontera de exploración, DEBEMOS MIRAR SI EL NUEVO COSTE ES MENOR QUE EL QUE TENIA ALMACENADO
         #SI esto es asi, hay que cambiarle el padre y setearle el nuevo coste.
         self.open.clear()
-        self.precessed.clear()
+        self.processed.clear()
         self.open.append(self.problem.Initial())
         path = []
        
@@ -26,7 +26,7 @@ class AStar:
         #implementar el bucle de búsqueda del algoritmo A*
         while len(self.open) > 0 and not findGoal:
             #ordenar la lista open por heuristica
-            self.open.sort(key=lambda node: node.f)
+            self.open.sort(key=lambda node: node.F())
 
             #sacamos el primer nodo de la lista open (mejor candidato)
             node = self.open.pop(0)
@@ -37,13 +37,13 @@ class AStar:
                 path = self.ReconstructPath(node) #reconstruyo el path
             else:
                 #añadimos el nodo a procesados
-                self.precessed.add(node)
+                self.processed.add(node)
                 #obtenemos los sucesores
                 successors = self.problem.GetSucessors(node)
                 #para cada sucesor (exploramos los vecinos)
                 for successor in successors:
                     #si el sucesor no está en procesados
-                    if successor not in self.precessed:
+                    if successor not in self.processed:
                         node_in_open = self.GetSucesorInOpen(successor)
 
                         if node_in_open == None:

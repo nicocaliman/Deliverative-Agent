@@ -141,7 +141,7 @@ class BCProblem(Problem):
     def CreateNode(self,successors,parent,x,y):
         value=self.map[x][y]
         g=BCProblem.GetCost(value)
-        rightNode = BCNode(parent,g,value,x,y)
+        rightNode = BCNode(parent, parent.G() + g, value, x, y)  # coste acumulado desde el inicio
         rightNode.SetH(self.Heuristic(rightNode))
         successors.append(rightNode)
 

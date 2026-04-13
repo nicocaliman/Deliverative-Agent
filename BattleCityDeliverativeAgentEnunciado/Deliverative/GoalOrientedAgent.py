@@ -31,6 +31,7 @@ class GoalOrientedAgent(BaseAgent):
     #Metodo que se llama al iniciar el agente. No devuelve nada y sirve para contruir el agente
     def Start(self):
         print("Inicio del agente ")
+        self.directionToLook = 0  # inicializado para evitar AttributeError en estado Attack
         self.stateMachine.Start(self)
         self.problem = None
         self.aStar = None

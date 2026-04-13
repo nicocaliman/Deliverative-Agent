@@ -15,7 +15,7 @@ class Attack(State):
         
         target = perception[self.directionToLook]
         #targetDist = perception[self.directionToLook+4]
-        if target != AgentConsts.PLAYER or target != AgentConsts.COMMAND_CENTER:
+        if target != AgentConsts.PLAYER and target != AgentConsts.COMMAND_CENTER:
             return "ExecutePlan"
         return self.id
     
