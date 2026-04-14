@@ -42,8 +42,8 @@ class BCProblem(Problem):
         successors = []
         #sucesores de un nodo dado
 
-        #movimientos posibles: NORTE, SUR, ESTE, OESTE  
-        moves = [(0,1), (0,-1), (1,0), (-1,0)]
+        #movimientos posibles: SUR, NORTE, OESTE, ESTE  
+        moves = [(0,1), (0,-1), (-1,0), (1,0)]
         
         #para cada movimiento, calculamos el nuevo nodo
         for move in moves:
@@ -113,7 +113,7 @@ class BCProblem(Problem):
     @staticmethod
     def GetCost(value):
         #debes darle un coste a cada tipo de casilla del mapa.
-        if value == AgentConsts.NOTHING or value == AgentConsts.EXIT or value == AgentConsts.PLAYER or value == AgentConsts.COMMAND_CENTER or value == AgentConsts.LIFE:
+        if value == AgentConsts.NOTHING or value == AgentConsts.EXIT or value == AgentConsts.OTHER or value == AgentConsts.PLAYER or value == AgentConsts.COMMAND_CENTER or value == AgentConsts.LIFE:
             return 1
         elif value == AgentConsts.BRICK or value == AgentConsts.SEMI_BREKABLE:
             return 100
