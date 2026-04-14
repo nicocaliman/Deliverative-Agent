@@ -31,44 +31,45 @@ class BCProblem(Problem):
 
     #Calcula la heuristica del nodo en base al problema planteado (Se necesita reimplementar)
     def Heuristic(self, node):
+        #heurística del nodo
         
-        #heurística del nodo        
-        dist_Manhattan = abs(node.x - self.goal.x) + abs(node.y - self.goal.y)
-        return dist_Manhattan
+        '''
+        calculo de la distancia en el eje x
+        '''        
+        distancia_manhattan_x = abs(node.x-self.GetGoal().x)
+        
+        '''
+        calculo de la distancia en el eje y
+        '''
+        distancia_manhattan_y = abs(node.y-self.GetGoal().y)
+
+        '''
+        suma de las distancias
+        '''
+        distancia_manhattan = distancia_manhattan_x + distancia_manhattan_y
+        print("Heuristica calculada")
+        return distancia_manhattan
 
     #Genera la lista de sucesores del nodo (Se necesita reimplementar)
     def GetSucessors(self, node):
         successors = []
         #sucesores de un nodo dado
 
-        #direccion este
-        coord_este = node.x + 1
+        #definir direcciones: arriba, abajo, derecha, izquierda
+        directions = [(0,1),(0,-1),(1,0),(-1,0)]
 
-        #si la coordenada esta dentro del mapa y podemos movernos
-        if coord_este >= 0 and coord_este < self.xSize and self.CanMove(self.map[coord_este, node.y]):
-            self.CreateNode(successors,node,coord_este,node.y) #creamos el nodo sucesor
+        #para cada direccion (norte, sur, este, oeste)
+        for dx, dy in directions:
+            pos_x = node.x + dx
+            pos_y = node.y + dy
 
-        # direccion oeste
-        coord_oeste = node.x - 1
-
-        #si la coordenada esta dentro del mapa y podemos movernos
-        if coord_oeste >= 0 and coord_oeste < self.xSize and self.CanMove(self.map[coord_oeste, node.y]):
-            self.CreateNode(successors,node,coord_oeste,node.y) #creamos el nodo sucesor
-
-        # direccion norte
-        coord_norte = node.y + 1
-
-        #si la coordenada esta dentro del mapa y podemos movernos
-        if coord_norte >= 0 and coord_norte < self.ySize and self.CanMove(self.map[node.x, coord_norte]):
-            self.CreateNode(successors,node,node.x,coord_norte) #creamos el nodo sucesor
-
-        # direccion sur
-        coord_sur = node.y - 1
-
-        #si la coordenada esta dentro del mapa y podemos movernos
-        if coord_sur >= 0 and coord_sur < self.ySize and self.CanMove(self.map[node.x, coord_sur]):
-            self.CreateNode(successors,node,node.x,coord_sur) #creamos el nodo sucesor
-
+            #comprueba que la posicion esta dentro del mapa
+            if 0 <= pos_x < self.xSize and 0 <= pos_y < self.ySize:
+                #si se puede mover a esa posicion
+                if BCProblem.CanMove(self.map[pos_x][pos_y]):
+                    #crear nodo y añadirlo a la lista de sucesores
+                    self.CreateNode(successors, node, pos_x, pos_y)           
+        
         return successors
     
     #métodos estáticos
@@ -76,7 +77,7 @@ class BCProblem(Problem):
     #parámetro
     @staticmethod
     def CanMove(value):
-        return value != AgentConsts.UNBREAKABLE and value != AgentConsts.SEMI_UNBREKABLE 
+        return value != AgentConsts.UNBREAKABLE and value != AgentConsts.SEMI_UNBREKABLE
     
     #convierte coordenadas mapa en formato vector a matriz
     @staticmethod
@@ -121,27 +122,27 @@ class BCProblem(Problem):
     #crea un nodo y lo añade a successors (lista) con el padre indicado y la posición x,y en coordenadas mapa 
     @staticmethod
     def GetCost(value):
-        #debes darle un coste a cada tipo de casilla del mapa.
-        
-        #suelo y objetivos (coste minimo)
-        if value == AgentConsts.NOTHING or value == AgentConsts.EXIT or value == AgentConsts.LIFE or value == AgentConsts.PLAYER or value == AgentConsts.COMMAND_CENTER:
+        #darle un coste a cada tipo de casilla del mapa.
+
+        #celdas traspasables
+        #si la celda es nada, jugador, centro de mando, vida o salida -> el coste es 1 (coste minimo)
+        if value in [AgentConsts.NOTHING, AgentConsts.PLAYER, AgentConsts.COMMAND_CENTER, AgentConsts.LIFE, AgentConsts.EXIT]:  
             return 1
-        #ladrillos y rompibles (coste medio/alto)
-        elif value == AgentConsts.BRICK or value == AgentConsts.SEMI_BREKABLE:
-            return 10
-        #peligro inmediato (balas)
-        elif value == AgentConsts.SHELL:
-            return 50 #coste muy alto para que el agente evite las balas
-        #obstaculos infranqueables
-        elif value == AgentConsts.UNBREAKABLE or value == AgentConsts.SEMI_UNBREKABLE:
+        #celdas semitraspasables
+        #si la celda es ladrillo o semirrompible, el coste es 10
+        elif value in [AgentConsts.BRICK, AgentConsts.SEMI_BREKABLE]:
+            return 10   
+        #celdas no traspasables
+        #si la celda es irrompible, el coste es infinito
+        elif value in [AgentConsts.UNBREAKABLE, AgentConsts.SEMI_UNBREKABLE]:
             return sys.maxsize
-        #para cualquier otro valor (other)
-        return 1
+        #siempre devuelve infinito por defecto
+        return sys.maxsize
     
     def CreateNode(self,successors,parent,x,y):
         value=self.map[x][y]
         g=BCProblem.GetCost(value)
-        rightNode = BCNode(parent, parent.G() + g, value, x, y)  # coste acumulado desde el inicio
+        rightNode = BCNode(parent,g,value,x,y)
         rightNode.SetH(self.Heuristic(rightNode))
         successors.append(rightNode)
 
