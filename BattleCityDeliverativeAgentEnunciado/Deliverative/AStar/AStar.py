@@ -10,8 +10,7 @@ class AStar:
 
     def GetPlan(self):
         findGoal = False
-        #implementar el algoritmo A*
-
+        #TODO implementar el algoritmo A*
         #cosas a tener en cuenta:
         #Si el número de sucesores es 0 es que el algoritmo no ha encontrado una solución, devolvemos el path vacio []
         #Hay que invertir el path para darlo en el orden correcto al devolverlo (path[::-1])
@@ -23,48 +22,14 @@ class AStar:
         self.open.append(self.problem.Initial())
         path = []
         #mientras no encontremos la meta y haya elementos en open....
-        #implementar el bucle de búsqueda del algoritmo A*
-        while len(self.open) > 0 and findGoal == False:
-            #ordenamos la lista de abiertos por el coste F
-            self.open.sort(key=lambda node: node.F())
-            #sacamos el nodo con menor coste F
-            node = self.open.pop(0)
-
-            #si el nodo es la meta
-            if node == self.problem.GetGoal():
-                #meta encontrada
-                findGoal = True
-                #reconstruimos el path
-                path = self.ReconstructPath(node)
-            else:
-                #añadimos el nodo a procesados
-                self.precessed.add(node)
-                
-                #generamos los sucesores
-                successors = self.problem.GetSucessors(node)
-                #para cada sucesor
-                for successor in successors:
-                    #si el sucesor no está en procesados
-                    if successor not in self.precessed:
-                        #si el sucesor no está en abierta
-                        if successor not in self.open:
-                            #lo añadimos a abierta
-                            self.ApendInOpen(successor)
-                        else:
-                            #si el sucesor está en abierta
-                            #comprobamos si el nuevo camino es más eficiente
-                            nodeInOpen = self.GetSucesorInOpen(successor)
-                            if successor.g < nodeInOpen.g:
-                                #si es más eficiente, lo actualizamos
-                                self._ConfigureNode(nodeInOpen, node, successor.g)
-                           
+        #TODO implementar el bucle de búsqueda del algoritmo A*
         return path
 
     #nos permite configurar un nodo (node) con el padre y la nueva G
     def _ConfigureNode(self, node, parent, newG):
         node.SetParent(parent)
         node.SetG(newG)
-        node.SetH(self.problem.Heuristic(node))
+        #TODO Setearle la heuristica que está implementada en el problema. (si ya la tenía será la misma pero por si reutilizais este método para otras cosas)
 
 
     def ApendInOpen(self, node):
@@ -87,14 +52,8 @@ class AStar:
     #reconstruye el path desde la meta encontrada.
     def ReconstructPath(self, goal):
         path = []
-        #devuelve el path invertido desde la meta hasta que el padre sea None.
-
-        currentNode = goal
-
-        while currentNode != None:
-            path.append(currentNode)
-            currentNode = currentNode.GetParent();
-        return path[::-1]
+        #TODO: devuelve el path invertido desde la meta hasta que el padre sea None.
+        return path
 
 
 
