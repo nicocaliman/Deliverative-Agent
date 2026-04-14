@@ -34,14 +34,32 @@ class BCProblem(Problem):
         #heurística del nodo
         dist_x_manhattan = abs(self.GetGoal().x - node.x)
         dist_y_manhattan = abs(self.GetGoal().y - node.y)
-        
+
         return dist_x_manhattan + dist_y_manhattan
 
     #Genera la lista de sucesores del nodo (Se necesita reimplementar)
     def GetSucessors(self, node):
         successors = []
-        #TODO: sucesores de un nodo dado
-        print("Aqui falta ncosas por hacer :) ")
+        #sucesores de un nodo dado
+
+        #movimientos posibles: NORTE, SUR, ESTE, OESTE  
+        moves = [(0,1), (0,-1), (1,0), (-1,0)]
+        
+        #para cada movimiento, calculamos el nuevo nodo
+        for move in moves:
+            #calculamos las nuevas coordenadas
+            newX = node.x + move[0]
+            newY = node.y + move[1]
+
+            #log para depurar
+            print(f"newX: {newX}, newY: {newY}")
+
+            if 0 <= newX < self.xSize and 0 <= newY < self.ySize:
+                #verificamos que el nuevo nodo sea valido
+                if BCProblem.CanMove(self.map[newX][newY]):
+                    #creamos el nuevo nodo
+                    self.CreateNode(successors, node, newX, newY)
+
         return successors
     
     #métodos estáticos
@@ -94,8 +112,10 @@ class BCProblem(Problem):
     #crea un nodo y lo añade a successors (lista) con el padre indicado y la posición x,y en coordenadas mapa 
     @staticmethod
     def GetCost(value):
-        #TODO: debes darle un coste a cada tipo de casilla del mapa.
-        print("Aqui falta ncosas por hacer :) ")
+        #debes darle un coste a cada tipo de casilla del mapa.
+        if value == AgentConsts.NOTHING or value == AgentConsts.EXIT or value == AgentConsts.PLAYER or value == AgentConsts.COMMAND_CENTER or value == AgentConsts.LIFE:
+            return 1
+        elif 
         return sys.maxsize
     
     def CreateNode(self,successors,parent,x,y):
