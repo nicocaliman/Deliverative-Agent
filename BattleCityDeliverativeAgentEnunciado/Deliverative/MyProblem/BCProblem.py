@@ -115,7 +115,8 @@ class BCProblem(Problem):
         #debes darle un coste a cada tipo de casilla del mapa.
         if value == AgentConsts.NOTHING or value == AgentConsts.EXIT or value == AgentConsts.PLAYER or value == AgentConsts.COMMAND_CENTER or value == AgentConsts.LIFE:
             return 1
-        elif 
+        elif value == AgentConsts.BRICK or value == AgentConsts.SEMI_BREKABLE:
+            return 100
         return sys.maxsize
     
     def CreateNode(self,successors,parent,x,y):
