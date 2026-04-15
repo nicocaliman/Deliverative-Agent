@@ -65,6 +65,7 @@ class GoalOrientedAgent(BaseAgent):
             current_goal = self.goalMonitor.SelectGoal(perception, map, self)
             #-le damos el modo inicial _CreateInitialNode
             initial_node = self._CreateInitialNode(perception)
+            #seteamos el nodo inicial del problema
             self.problem.SetInitial(initial_node)
             #-establecer la meta actual al problema para que A* sepa cual es.
             self.problem.SetGoal(current_goal)

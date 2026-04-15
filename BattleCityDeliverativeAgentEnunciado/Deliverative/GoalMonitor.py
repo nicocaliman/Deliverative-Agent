@@ -33,14 +33,19 @@ class GoalMonitor:
 
         #si la command center no esta destruida
         if perception[AgentConsts.COMMAND_CENTER_X] >= 0 and perception[AgentConsts.COMMAND_CENTER_Y] >= 0:
-            
+            if dist_to_player < dist_to_cc:
+                return self.goals[self.GOAL_PLAYER]
             #por defecto, sera la command center
             return self.goals[self.GOAL_COMMAND_CENTRER]
 
         #si la command center esta destruida
         else:
+            if  dist_to_player < dist_to_exit:
+                return self.goals[self.GOAL_PLAYER]
+
             #por defecto, sera la salida
             return self.goals[self.GOAL_EXIT]
+
         print("TODO aqui faltan cosas :)")
         return self.goals[random.randint(0,len(self.goals))]
     
