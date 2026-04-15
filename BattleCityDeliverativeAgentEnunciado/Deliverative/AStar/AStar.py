@@ -12,7 +12,7 @@ class AStar:
     def GetPlan(self):
         findGoal = False
 
-        #TODO implementar el algoritmo A*
+        #implementar el algoritmo A*
         #cosas a tener en cuenta:
         #Si el número de sucesores es 0 es que el algoritmo no ha encontrado una solución, devolvemos el path vacio []
         #Hay que invertir el path para darlo en el orden correcto al devolverlo (path[::-1])
@@ -26,7 +26,7 @@ class AStar:
         path = []
 
         #mientras no encontremos la meta y haya elementos en open....
-        #TODO implementar el bucle de búsqueda del algoritmo A*
+        #implementar el bucle de búsqueda del algoritmo A*
 
         # Cola de prioridad (f(nodo) = g(nodo) + h(nodo))
         heapq.heappush(self.open, (0 + self.problem.Heuristic(self.problem.Initial()), self.problem.Initial()))
@@ -61,6 +61,7 @@ class AStar:
     def _ConfigureNode(self, node, parent, newG):
         node.SetParent(parent)
         node.SetG(newG)
+        #setear la heuristica del nodo
         node.setH(self.problem.Heuristic(node))
 
     # TODO INUTIL??
@@ -85,7 +86,7 @@ class AStar:
     #reconstruye el path desde la meta encontrada.
     def ReconstructPath(self, goal):
         path = []
-
+        
         nodo_aux = goal
         while nodo_aux is not None:
             path.append(nodo_aux)

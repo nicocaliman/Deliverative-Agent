@@ -28,6 +28,19 @@ class GoalMonitor:
     #selecciona la meta mas adecuada al estado actual
     def SelectGoal(self, perception, map, agent):
         #TODO definir la estrategia del cambio de meta
+
+
+
+        #si la command center no esta destruida
+        if perception[AgentConsts.COMMAND_CENTER_X] >= 0 and perception[AgentConsts.COMMAND_CENTER_Y] >= 0:
+            
+            #por defecto, sera la command center
+            return self.goals[self.GOAL_COMMAND_CENTRER]
+
+        #si la command center esta destruida
+        else:
+            #por defecto, sera la salida
+            return self.goals[self.GOAL_EXIT]
         print("TODO aqui faltan cosas :)")
         return self.goals[random.randint(0,len(self.goals))]
     
