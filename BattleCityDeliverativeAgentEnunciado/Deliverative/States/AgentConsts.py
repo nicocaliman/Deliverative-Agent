@@ -38,6 +38,6 @@ class AgentConsts:
     SHELL = 5 
     OTHER = 6
     LIFE = 7
-    SEMI_BREKABLE = 8
-    SEMI_UNBREKABLE = 9
+    SEMI_BREAKABLE = 8
+    SEMI_UNBREAKABLE = 9
     EXIT = 10

@@ -15,8 +15,6 @@ class LGymConnect:
 		self.host = host
 		self.bufferSide = bufferSize #1024
 	
-	
-	
 	def serverProgram(self,GetData):
 		server_socket = socket.socket()  # get instance
 		# look closely. The bind() function takes tuple as argument
@@ -48,7 +46,6 @@ class LGymConnect:
 		client_socket = socket.socket()  # instantiate
 		client_socket.connect((self.host, self.port))  # connect to the server
 		self.client_socket = client_socket
-		
 		
 	def clientSend(self,message):
 		self.client_socket.send(message.encode("UTF-8"))

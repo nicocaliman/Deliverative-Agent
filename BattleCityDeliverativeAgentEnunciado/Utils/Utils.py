@@ -3,7 +3,6 @@ from onnx2json import convert
 import pickle
 import json
 
-
 def ExportONNX_JSON_TO_Custom(onnx_json,mlp):
     graphDic = onnx_json["graph"]
     initializer = graphDic["initializer"]

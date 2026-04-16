@@ -120,7 +120,7 @@ class AStar:
         """
 
         if node.g == None:
-            print("AppendInOpen ", node.x, node.y)
+            print("AppendInOpen ", node.GetX(), node.GetY())
         self.open.append(node)
 
     # TODO revisar si esto es realmente necesario

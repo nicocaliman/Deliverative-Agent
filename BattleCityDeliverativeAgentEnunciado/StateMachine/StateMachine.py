@@ -7,7 +7,7 @@ class StateMachine(State):
         self.curentState = initial
     
     #Metodo que se llama al iniciar la máquina de estado
-    def Start(self,agent):
+    def Start(self, agent):
         print("Inicio de la maquina de estados ")
         self.states[self.curentState].Start(agent)
 

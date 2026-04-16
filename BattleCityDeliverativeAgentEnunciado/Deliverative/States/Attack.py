@@ -18,4 +18,3 @@ class Attack(State):
         if target != AgentConsts.PLAYER or target != AgentConsts.COMMAND_CENTER:
             return "ExecutePlan"
         return self.id
-    

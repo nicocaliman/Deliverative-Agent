@@ -11,7 +11,7 @@ from States.RandomMovement import RandomMovement
 
 class GoalOrientedAgent(BaseAgent):
 
-    # TODO revisar si es necesario añadir claves al diccionario de estados
+    # TODO revisar si es necesario añadir claves al diccionario de estados y estados nuevos
     def __init__(self, id, name):
         """
         Constructor del agente:
@@ -201,7 +201,7 @@ class GoalOrientedAgent(BaseAgent):
         """
 
         for n in plan:
-            print("X: ",n.x,"Y:",n.y,"[",n.value,"]{",n.G(),"} => ")
+            print("X: ", n.GetX(), "Y:", n.GetY(), "[", n.GetValue(), "]{", n.G(), "} => ")
 
     def GetPlan(self):
         """

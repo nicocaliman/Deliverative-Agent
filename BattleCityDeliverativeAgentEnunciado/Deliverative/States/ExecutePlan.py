@@ -11,7 +11,7 @@ class ExecutePlan(State):
         self.lastMove = 0
         self.transition = ""
 
-    def Start(self,agent):
+    def Start(self, agent):
         self.transition = ""
         self.XPos = -1
         self.YPos = -1
@@ -64,37 +64,37 @@ class ExecutePlan(State):
         return self.id
 
     @staticmethod
-    def MoveDown(node,x,y):
-        return abs(node.x+0.5 - x) <= abs(node.y+0.5 - y) and (node.y+0.5) >= y #+0.5 por el centro del nodo
+    def MoveDown(node, x, y):
+        return abs(node.GetX() + 0.5 - x) <= abs(node.GetY() + 0.5 - y) and (node.GetY() + 0.5) >= y # +0.5 por el centro del nodo
     
 
     @staticmethod
-    def MoveUp(node,x,y):
-        return abs(node.x+0.5 - x) <= abs(node.y+0.5 - y) and (node.y+0.5) <= y #+0.5 por el centro del nodo
+    def MoveUp(node, x, y):
+        return abs(node.GetX() + 0.5 - x) <= abs(node.GetY() + 0.5 - y) and (node.GetY() + 0.5) <= y # +0.5 por el centro del nodo
     
 
     @staticmethod
-    def MoveRight(node,x,y):
-        return abs(node.x+0.5 - x) >= abs(node.y+0.5 - y) and (node.x+0.5) >= x #+0.5 por el centro del nodo
+    def MoveRight(node, x, y):
+        return abs(node.GetX() + 0.5 - x) >= abs(node.GetY() + 0.5 - y) and (node.GetX() + 0.5) >= x # +0.5 por el centro del nodo
     
 
     @staticmethod
-    def MoveLeft(node,x,y):
-        return abs(node.x+0.5 - x) >= abs(node.y+0.5 - y) and (node.x +0.5) <= x #+0.5 por el centro del nodo
+    def MoveLeft(node, x, y):
+        return abs(node.GetX() + 0.5 - x) >= abs(node.GetY() + 0.5 - y) and (node.GetX() + 0.5) <= x # +0.5 por el centro del nodo
     
     @staticmethod
     def IsInNode(node, x,y, lastDir, threshold):
-        distanceX = abs((node.x+0.5) - x)
-        distanceY = abs((node.y+0.5) - y)
-        inAceptZone = abs((node.x+0.5) - x) < threshold and abs((node.y+0.5) - y)< threshold #+0.5 porque es el centro del nodo
+        distanceX = abs((node.GetX() + 0.5) - x)
+        distanceY = abs((node.GetY() + 0.5) - y)
+        inAceptZone = abs((node.GetX() + 0.5) - x) < threshold and abs((node.GetY() + 0.5) - y) < threshold # +0.5 porque es el centro del nodo
         if inAceptZone:
             return True
         else:
             directionX,directionY = ExecutePlan.GetDirectionVector(lastDir)
             simulateX = x+directionX*threshold
             simulateY = y+directionY*threshold
-            simulateDistanceX = abs((node.x+0.5) - simulateX)
-            simulateDistanceY = abs((node.y+0.5) - simulateY)
+            simulateDistanceX = abs((node.GetX() + 0.5) - simulateX)
+            simulateDistanceY = abs((node.GetY() + 0.5) - simulateY)
             if (simulateDistanceX+simulateDistanceY) > (distanceX+distanceY): ## estoy mas lejos me he pasado, paro
                 return True
             else: #aún no he llegado al punto de aceptación

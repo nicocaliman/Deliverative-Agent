@@ -1,31 +1,59 @@
 import random
-import time
+
 class BaseAgent:
+
     def __init__(self, id, name):
+        """
+        Constructor del agente base:
+            1. Asigna su identificador
+            2. Asigna su nombre
+        """
+
         self.id = id
         self.name = name
 
-    #Devuelve el nombre del agente
     def Name(self):
+        """
+        Metodo que devuelve el nombre del agente
+        """
+
         return self.name
-    #Devuelve el id del agente
+    
     def Id(self):
+        """
+        Metodo que devuelve el identificador del agente
+        """
+
         return self.id
-    #Metodo que se llama al iniciar el agente. No devuelve nada y sirve para contruir el agente
+    
     def Start(self):
+        """
+        Metodo que se llama al iniciar el agente (Actualmente no hace nada)
+        """
+
         print("Inicio del agente ")
 
-    #Metodo que se llama en cada actualización del agente, y se proporciona le vector de percepciones
-    #Devuelve la acción u el disparo si o no
-    def Update(self, perception,map):
+    def Update(self, perception, map):
+        """
+        Metodo que se llama en cada actualizacion del agente (necesita percepcion y mapa):
+            - Genera una accion aleatoria (numero del 0 al 4)
+        Devuelve la accion y "True" (puede disparar siempre)
+        """
+
         print("Toma de decisiones del agente")
         print(perception)
+
         print("Mapa")
         print(map)
+
         action = random.randint(0,4)
+
         return action, True
     
-    #Metodo que se llama al finalizar el agente, se pasa el estado de terminacion
     def End(self, win):
+        """
+        Metodo que se llama al finalizar el agente, recibe el estado de terminacion ("Victoria" o "Derrota")
+        """
+
         print("Agente finalizado")
-        print("Victoria ",win)
+        print("Victoria: ", win)

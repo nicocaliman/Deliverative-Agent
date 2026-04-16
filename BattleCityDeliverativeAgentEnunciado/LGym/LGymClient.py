@@ -11,7 +11,6 @@
 import LGymConnect as LGymC
 import time
 
-
 class LGymClient:
     def __init__(self, host, port, id):
         self.host = host
