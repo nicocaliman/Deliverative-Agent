@@ -95,19 +95,6 @@ class GoalOrientedAgent(BaseAgent):
         #currentGoal = self.problem.GetGoal()
 
         if self.goalMonitor != None:
-<<<<<<< Updated upstream
-            #creamos un plan, pasos:
-            #-con goalMonitor, seleccionamos la meta actual (Que será la mas propicia => definir la estrategia a seguir).
-            current_goal = self.goalMonitor.SelectGoal(perception, map, self)
-            #-le damos el modo inicial _CreateInitialNode
-            initial_node = self._CreateInitialNode(perception)
-            #seteamos el nodo inicial del problema
-            self.problem.SetInitial(initial_node)
-            #-establecer la meta actual al problema para que A* sepa cual es.
-            self.problem.SetGoal(current_goal)
-
-            #-Calcular el plan usando A*        
-=======
             
             # Elige el objetivo
             selectedGoal = self.goalMonitor.SelectGoal(perception, map, self)
@@ -120,7 +107,6 @@ class GoalOrientedAgent(BaseAgent):
             self.problem.SetGoal(selectedGoal)
 
         # Calcular el plan con A*
->>>>>>> Stashed changes
         return self.aStar.GetPlan()
         
     @staticmethod
