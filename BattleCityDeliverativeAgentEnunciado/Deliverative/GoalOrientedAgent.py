@@ -1,17 +1,22 @@
 from Agent.BaseAgent import BaseAgent
 from StateMachine.StateMachine import StateMachine
-from States.ExecutePlan import ExecutePlan
 from GoalMonitor import GoalMonitor
 from AStar.AStar import AStar
 from MyProblem.BCNode import BCNode
 from MyProblem.BCProblem import BCProblem
+
 from States.AgentConsts import AgentConsts
 from States.Attack import Attack
 from States.RandomMovement import RandomMovement
+from States.ExecutePlan import ExecutePlan
+from States.BreakOut import BreakOut
+from States.Chase import Chase
+from States.Evade import Evade
+from States.Intercept import Intercept
+from States.Recover import Recover
 
 class GoalOrientedAgent(BaseAgent):
 
-    # TODO revisar si es necesario añadir claves al diccionario de estados y estados nuevos
     def __init__(self, id, name):
         """
         Constructor del agente:
@@ -25,7 +30,12 @@ class GoalOrientedAgent(BaseAgent):
         dictionary = {
             "ExecutePlan" : ExecutePlan("ExecutePlan"),
             "Attack" : Attack("Attack"),
-            "RandomMovement" : RandomMovement("RandomMovement")
+            "RandomMovement" : RandomMovement("RandomMovement"),
+            "BreakOut": BreakOut("BreakOut"),
+            "Chase": Chase("Chase"),
+            "Evade": Evade("Evade"),
+            "Intercept": Intercept("Intercept"),
+            "Recover": Recover("Recover")
         }
         
         self.stateMachine = StateMachine("GoalOrientedBehavior", dictionary, "ExecutePlan")
@@ -82,7 +92,6 @@ class GoalOrientedAgent(BaseAgent):
 
         return action, shot
     
-    # TODO revisar porque nos daban una linea comentada
     def _CreatePlan(self, perception, map):
         """
         Crea un plan, siempre y cuando el agente tenga un monitor de objetivos, en funcion de la percepcion y el mapa:

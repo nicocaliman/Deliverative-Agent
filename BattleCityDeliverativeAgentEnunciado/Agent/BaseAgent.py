@@ -1,6 +1,9 @@
 import random
 
 class BaseAgent:
+    """
+    Clase que modela un agente basico
+    """
 
     def __init__(self, id, name):
         """

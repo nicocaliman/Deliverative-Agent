@@ -1,4 +1,3 @@
-import random
 from States.AgentConsts import AgentConsts
 
 class GoalMonitor:
@@ -35,10 +34,6 @@ class GoalMonitor:
 
         self.recalculate = True
 
-    # TODO si ruta invalida
-    # TODO si va a ser golpeado por una "shell"
-    # TODO si puede destruir el "command_center"
-    # TODO revisar si hace falta poner a false en "self.recalculate"
     def NeedReplaning(self, perception, map, agent):
         """
         Metodo que devuelve si necesita replanificar en alguna de las siguientes condiciones:
@@ -87,7 +82,7 @@ class GoalMonitor:
         # Si tiene la salida cerca
         exit_x = perception[AgentConsts.EXIT_X]
         exit_y = perception[AgentConsts.EXIT_Y]
-        replaning = replaning or (abs(life_x - agent_x) + abs(life_y - agent_y) <= 10)
+        replaning = replaning or (abs(exit_x - agent_x) + abs(exit_y - agent_y) <= 10)
 
         # Si necesita replanificar por cualquier motivo, acualiza el timer
         if replaning:
@@ -97,8 +92,6 @@ class GoalMonitor:
         # Devuelve si necesita replanificar o no
         return replaning
     
-    # TODO mejorar la toma de decisiones (otros casos)
-    # TODO añadir mas "complejidad" para seleccionar mejor
     def SelectGoal(self, perception, map, agent):
         """
         Selenciona uno de los objetivos en base a la logica:

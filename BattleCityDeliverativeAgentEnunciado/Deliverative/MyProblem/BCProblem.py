@@ -96,7 +96,7 @@ class BCProblem(Problem):
         Metodo estatico para saber si un nodo es accesible en base al valor de ese nodo
         """
 
-        return value != AgentConsts.UNBREAKABLE and value != AgentConsts.SEMI_UNBREKABLE and value != AgentConsts.SEMI_UNBREKABLE
+        return value != AgentConsts.UNBREAKABLE and value != AgentConsts.SEMI_UNBREAKABLE and value != AgentConsts.SEMI_UNBREAKABLE
     
     @staticmethod
     def Vector2MatrixCoord(pos, xSize, ySize):

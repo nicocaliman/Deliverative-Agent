@@ -15,10 +15,11 @@ class StateMachine(State):
     #devuelve las acciones (actuadores) que el agente realiza
     def Update(self, perception, map, agent):
         actions = self.states[self.curentState].Update(perception, map, agent)
-        newState=self.states[self.curentState].Transit(perception, map)
+        newState = self.states[self.curentState].Transit(perception, map)
+
         if newState != self.curentState:
             self.states[self.curentState].End()
-            self.curentState=newState
+            self.curentState = newState
             self.states[self.curentState].Start(agent)
         return actions
     

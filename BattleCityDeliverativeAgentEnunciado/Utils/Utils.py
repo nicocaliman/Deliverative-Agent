@@ -6,22 +6,25 @@ import json
 def ExportONNX_JSON_TO_Custom(onnx_json,mlp):
     graphDic = onnx_json["graph"]
     initializer = graphDic["initializer"]
-    s= "num_layers:"+str(mlp.n_layers_)+"\n"
+    s = "num_layers:" + str(mlp.n_layers_) + "\n"
+
     index = 0
-    parameterIndex = 0;
+    parameterIndex = 0
+
     for parameter in initializer:
-        s += "parameter:"+str(parameterIndex)+"\n"
+        s += "parameter:" + str(parameterIndex) + "\n"
         print(parameter["dims"])
-        s += "dims:"+str(parameter["dims"])+"\n"
+        s += "dims:" + str(parameter["dims"]) + "\n"
         print(parameter["name"])
-        s += "name:"+str(parameter["name"])+"\n"
+        s += "name:" + str(parameter["name"]) + "\n"
         print(parameter["doubleData"])
-        s += "values:"+str(parameter["doubleData"])+"\n"
+        s += "values:" + str(parameter["doubleData"]) + "\n"
         index = index + 1
         parameterIndex = index // 2
+
     return s
 
-def ExportAllformatsMLPSKlearn(mlp,X,picklefileName,onixFileName,jsonFileName,customFileName):
+def ExportAllformatsMLPSKlearn(mlp, X, picklefileName, onixFileName, jsonFileName, customFileName):
     with open(picklefileName,'wb') as f:
         pickle.dump(mlp,f)
     
@@ -29,8 +32,8 @@ def ExportAllformatsMLPSKlearn(mlp,X,picklefileName,onixFileName,jsonFileName,cu
     with open(onixFileName, "wb") as f:
         f.write(onx.SerializeToString())
     
-    onnx_json = convert(input_onnx_file_path=onixFileName,output_json_path=jsonFileName,json_indent=2)
+    onnx_json = convert(input_onnx_file_path = onixFileName, output_json_path = jsonFileName, json_indent = 2)
     
-    customFormat = ExportONNX_JSON_TO_Custom(onnx_json,mlp)
+    customFormat = ExportONNX_JSON_TO_Custom(onnx_json, mlp)
     with open(customFileName, 'w') as f:
         f.write(customFormat)
