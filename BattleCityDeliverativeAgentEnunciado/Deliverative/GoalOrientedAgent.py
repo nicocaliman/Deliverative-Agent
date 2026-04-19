@@ -9,9 +9,9 @@ from States.AgentConsts import AgentConsts
 from States.Attack import Attack
 from States.RandomMovement import RandomMovement
 from States.ExecutePlan import ExecutePlan
+
 from States.BreakOut import BreakOut
 from States.Chase import Chase
-from States.Evade import Evade
 from States.Intercept import Intercept
 from States.Recover import Recover
 
@@ -33,7 +33,6 @@ class GoalOrientedAgent(BaseAgent):
             "RandomMovement" : RandomMovement("RandomMovement"),
             "BreakOut": BreakOut("BreakOut"),
             "Chase": Chase("Chase"),
-            "Evade": Evade("Evade"),
             "Intercept": Intercept("Intercept"),
             "Recover": Recover("Recover")
         }

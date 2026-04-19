@@ -110,9 +110,8 @@ class AStar:
 
         node.SetParent(parent)
         node.SetG(newG)
-        node.setH(self.problem.Heuristic(node))
+        node.SetH(self.problem.Heuristic(node))
 
-    # TODO revisar si esto es realmente necesario
     def AppendInOpen(self, node):
         """
         Añade un nodo a la lista de nodos a explorar:
@@ -123,7 +122,6 @@ class AStar:
             print("AppendInOpen ", node.GetX(), node.GetY())
         self.open.append(node)
 
-    # TODO revisar si esto es realmente necesario
     #Si esta es que ya ha sido expandido y tendrá un coste, comprobar que le nuevo camino no es más eficiente
     #En caso de serlos, _ConfigureNode para setearle el nuevo padre y el nuevo G, asi como su heurística
     def GetSuccessorInOpen(self, successor):

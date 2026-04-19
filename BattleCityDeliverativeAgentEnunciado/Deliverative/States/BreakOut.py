@@ -1,6 +1,6 @@
 from StateMachine.State import State
 from States.AgentConsts import AgentConsts
-import random
+from MyProblem.BCProblem import BCProblem
  
 class BreakOut(State):
     """
@@ -50,8 +50,8 @@ class BreakOut(State):
         Devuelve la tupla (move, shoot)
         """
         
-        agentX = int(perception[AgentConsts.AGENT_X] / 2)
-        agentY = int(perception[AgentConsts.AGENT_Y] / 2)
+        agentX = perception[AgentConsts.AGENT_X]
+        agentY = perception[AgentConsts.AGENT_Y]
 
         costs = {}
         directions = [(AgentConsts.MOVE_UP, 0, -1), (AgentConsts.MOVE_DOWN, 0, 1), (AgentConsts.MOVE_RIGHT, 1, 0), (AgentConsts.MOVE_LEFT, -1, 0)]
@@ -62,7 +62,7 @@ class BreakOut(State):
                 costs[move] = 1000
                 continue
 
-            cell = map[nx][ny]
+            cell = BCProblem.Matrix2VectorCoord(nx, ny, 15)
             match cell:
                 case AgentConsts.UNBREAKABLE | AgentConsts.SEMI_UNBREAKABLE | AgentConsts.PLAYER | AgentConsts.SHELL:
                     costs[move] = 1000
@@ -83,7 +83,8 @@ class BreakOut(State):
         
         shot = False
         if 0 <= nextX < 15 and 0 <= nextY < 15:
-            if map[nextX][nextY] == AgentConsts.BRICK | AgentConsts.SEMI_BREAKABLE:
+            value = BCProblem.Matrix2VectorCoord(nextX, nextY, 15)
+            if value == AgentConsts.BRICK | value == AgentConsts.SEMI_BREAKABLE:
                 shot = True
         
         self.timeInBreakout += 1
@@ -99,21 +100,19 @@ class BreakOut(State):
             - Si no, se queda en "BreakOut"
         """
         
-        agentX = int(perception[AgentConsts.AGENT_X] / 2)
-        agentY = int(perception[AgentConsts.AGENT_Y] / 2)
+        agentX = perception[AgentConsts.AGENT_X]
+        agentY = perception[AgentConsts.AGENT_Y]
         
         blocked = 0
         for dx, dy in [(0,1), (0,-1), (1,0), (-1,0)]:
             nx, ny = agentX + dx, agentY + dy
+            value = BCProblem.Matrix2VectorCoord(nx, ny, 15)
             if nx < 0 or nx >= 15 or ny < 0 or ny >= 15:
                 blocked += 1
-            elif map[nx][ny] in (AgentConsts.UNBREAKABLE, AgentConsts.SEMI_UNBREAKABLE):
+            elif value in (AgentConsts.UNBREAKABLE, AgentConsts.SEMI_UNBREAKABLE):
                 blocked += 1
         
-        if blocked < 3:
-            return "ExecutePlan"
-        
-        if self.timeInBreakout >= 200:
+        if blocked < 3 or self.timeInBreakout >= 10:
             return "ExecutePlan"
         
         return self.id

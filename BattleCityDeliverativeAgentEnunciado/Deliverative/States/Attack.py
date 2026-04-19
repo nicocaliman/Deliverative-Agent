@@ -15,7 +15,6 @@ class Attack(State):
         """
 
         super().__init__(id)
-        self.directionToLook = -1
         self.timeInAttack = 0
 
     def Start(self, agent):
@@ -24,7 +23,6 @@ class Attack(State):
             - Inicializa los valores igual que la constructora
         """
 
-        self.directionToLook = -1
         self.timeInAttack = 0
 
     def Update(self, perception, map, agent):
@@ -35,20 +33,29 @@ class Attack(State):
         Devuelve la tupla (move, "True")
         """
 
-        playerX = perception[AgentConsts.PLAYER_X] / 2
-        playerY = perception[AgentConsts.PLAYER_Y] / 2
-        agentX = perception[AgentConsts.AGENT_X] / 2
-        agentY = perception[AgentConsts.AGENT_Y] / 2
+        playerX = perception[AgentConsts.PLAYER_X]
+        playerY = perception[AgentConsts.PLAYER_Y]
+        agentX = perception[AgentConsts.AGENT_X]
+        agentY = perception[AgentConsts.AGENT_Y]
 
         dx = playerX - agentX
         dy = playerY - agentY
 
-        if abs(dx) > 1.5: move = AgentConsts.MOVE_RIGHT if dx > 0 else AgentConsts.MOVE_LEFT
-        elif abs(dy) > 1.5: move = AgentConsts.MOVE_DOWN if dy > 0 else AgentConsts.MOVE_UP
+        # Hay mas diferencia horizontal
+        if (abs(dx) > abs(dy)):
+            # El agente esta mas a la derecha
+            if dx < 0: move = AgentConsts.MOVE_LEFT
+            # El agente esta mas a la izquierda
+            else: move = AgentConsts.MOVE_RIGHT
+        # Hay mas diferenia vertical
+        elif (abs(dx) < abs(dy)):
+            # El agente esta por encima
+            if dy < 0: move = AgentConsts.MOVE_DOWN
+            # El agente esta por debajo
+            else: move = AgentConsts.MOVE_UP
         else: move = AgentConsts.NO_MOVE
         
         self.timeInAttack += 1
-        self.directionToLook = agent.directionToLook
         
         return (move, True)
 
@@ -57,29 +64,16 @@ class Attack(State):
         Decide la transicion de estado:
             - Si el target desaparece (jugador o "command_center"), pasa a "ExecutePlan"
             - Si el jugador se mueve muy lejos, pasa a "Chase"
-            - Si el agente tiene poca vida (<= 2), pasa a "Recover"
             - Si no, permanece en "Attack"
         """
         
         playerX = perception[AgentConsts.PLAYER_X]
         playerY = perception[AgentConsts.PLAYER_Y]
 
-        health = perception[AgentConsts.HEALTH]
-
-        agentX = perception[AgentConsts.AGENT_X] / 2
-        agentY = perception[AgentConsts.AGENT_Y] / 2
-
-        target = perception[self.directionToLook]
-        if target != AgentConsts.PLAYER or target != AgentConsts.COMMAND_CENTER:
+        commandX = perception[AgentConsts.COMMAND_CENTER_X]
+        commandY = perception[AgentConsts.COMMAND_CENTER_Y]
+        
+        if (playerX == -1 or playerY == -1) or (commandX == -1 or commandY == -1) or self.timeInAttack >= 8:
             return "ExecutePlan"
-        
-        playerX /= 2
-        playerY /= 2
-        dist = abs(playerX - agentX) + abs(playerY - agentY)
-        if dist > 5:
-            return "Chase"
-        
-        if health <= 2:
-            return "Recover"
         
         return self.id

@@ -96,45 +96,36 @@ class ExecutePlan(State):
 
     def Transit(self, perception, map):
         """
-        Decide la transicion de estado:
-            - Calcula las posiciones del agente y el jugador
-            - Calcula la vida del agente
-            - Si el jugador esta visible y hay rango para interceptar, pasa a "Intercept"
-            - Si el jugador esta visible y no hay rango para interceptar, pasa a "Chase"
-            - Si el agente esta rodeado, pasa a "BreakOut"
-            - Si hay peligro asegurado, pasa a "Evade"
-            - Si tiene poca vida pasa a "Recover"
-            - Si el update ha establecido "Attack" como transicion, y hay jugador/"command_center", pasa a "Attack"
-            - Si lleva mas de 5 iteraciones atascado, pasa a "RandomMovement"
-            - Si no, se mantiene en "ExecutePlan"
+        Decide la transicion de estado
         """
-        
-        playerX = perception[AgentConsts.PLAYER_X] / 2
-        playerY = perception[AgentConsts.PLAYER_Y] / 2
-        agentX = perception[AgentConsts.AGENT_X] / 2
-        agentY = perception[AgentConsts.AGENT_Y] / 2
+
+        playerX = perception[AgentConsts.PLAYER_X]
+        playerY = perception[AgentConsts.PLAYER_Y]
+        agentX = perception[AgentConsts.AGENT_X]
+        agentY = perception[AgentConsts.AGENT_Y]
+        life_x = perception[AgentConsts.LIFE_X]
+        life_y = perception[AgentConsts.LIFE_Y]
         health = perception[AgentConsts.HEALTH]
-        
-        if health <= 3:
-            return "Recover"
 
-        elif self._IsInDanger(perception, map):
-            return "Evade"
+        dist = abs(playerX - agentX) + abs(playerY - agentY)
 
-        elif self._IsRounded(perception, map):
-            return "BreakOut"
-
-        elif playerX > 0 and playerY > 0:
-            playerDist = abs(playerX - agentX) + abs(playerY - agentY)
-            
-            if 8 <= playerDist <= 15:
-                return "Intercept"
-
-            if playerDist < 8:
-                return "Chase"
-        
-        elif self.transition != None and self.transition != "":
+        if self.transition != None and self.transition != "":
             return self.transition
+        
+        elif dist <= 3 and health == 3 and (playerX != -1 and playerY != -1):
+            return "Attack"
+
+        elif dist >= 5 and (abs(playerX - agentX) <= 2 or abs(playerY - agentY) <= 2) and (playerX != -1 and playerY != -1):
+            return "Chase"
+        
+        elif dist >= 8 and (playerX != -1 and playerY != -1):
+            return "Intercept"
+        
+        elif health == 2 and dist <= 3 and (playerX != -1 and playerY != -1):
+            return "BreakOut"
+        
+        elif health == 1 and (life_x != -1 and life_y != -1):
+            return "Recover"
         
         elif self.noMovements > 5:
             return "RandomMovement"
@@ -236,40 +227,3 @@ class ExecutePlan(State):
         else:
             return AgentConsts.NO_MOVE
             # me muevo en la dirección donde haya mas diferencia
-
-    def _IsRounded(self, perception, map):
-        """
-        Metodo que devuelve si el agente esta rodeado:
-            - Mas de 3 direcciones con obstaculos (paredes no rompibles)
-        """
-
-        agentX = int(perception[AgentConsts.AGENT_X] / 2)
-        agentY = int(perception[AgentConsts.AGENT_Y] / 2)
-        blocked = 0
-
-        for dx, dy in [(0,1), (0,-1), (1,0), (-1,0)]:
-            nx, ny = agentX + dx, agentY + dy
-            if nx < 0 or nx >= 15 or ny < 0 or ny >= 15:
-                blocked += 1
-            elif map[nx][ny] in (AgentConsts.UNBREAKABLE, AgentConsts.SEMI_UNBREAKABLE):
-                blocked += 1
-        
-        return blocked >= 3
-    
-    def _IsInDanger(self, perception, map):
-        """
-        Metodo que devuelve si el agente esta en peligro
-            - Disparo o enemigo muy cerca
-        """
-
-        agentX = int(perception[AgentConsts.AGENT_X] / 2)
-        agentY = int(perception[AgentConsts.AGENT_Y] / 2)
-        
-        for dx in range(-3, 4):
-            for dy in range(-3, 4):
-                nx, ny = agentX + dx, agentY + dy
-                if 0 <= nx < 15 and 0 <= ny < 15:
-                    if map[nx][ny] == AgentConsts.SHELL or map[nx][ny] == AgentConsts.PLAYER:
-                        return True
-        
-        return False

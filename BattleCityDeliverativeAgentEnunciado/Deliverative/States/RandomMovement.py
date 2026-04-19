@@ -1,5 +1,6 @@
 from StateMachine.State import State
 from States.AgentConsts import AgentConsts
+from MyProblem.BCProblem import BCProblem
 import random
 
 class RandomMovement(State):
@@ -45,10 +46,10 @@ class RandomMovement(State):
         Devuelve una tupla (move, "True")
         """
 
-        agentX = int(perception[AgentConsts.AGENT_X] / 2)
-        agentY = int(perception[AgentConsts.AGENT_Y] / 2)
-        playerX = perception[AgentConsts.PLAYER_X] / 2
-        playerY = perception[AgentConsts.PLAYER_Y] / 2
+        agentX = perception[AgentConsts.AGENT_X]
+        agentY = perception[AgentConsts.AGENT_Y]
+        playerX = perception[AgentConsts.PLAYER_X]
+        playerY = perception[AgentConsts.PLAYER_Y]
 
         legalMoves = []
         directions = [(AgentConsts.MOVE_UP, 0, -1), (AgentConsts.MOVE_DOWN, 0, 1), (AgentConsts.MOVE_RIGHT, 1, 0), (AgentConsts.MOVE_LEFT, -1, 0)]
@@ -57,9 +58,9 @@ class RandomMovement(State):
             
             if nx < 0 or nx >= 15 or ny < 0 or ny >= 15:
                 continue
-
-            cell = map[nx][ny]
-            if cell in (AgentConsts.UNBREAKABLE, AgentConsts.SEMI_UNBREAKABLE):
+            
+            value = BCProblem.Matrix2VectorCoord(nx, ny, 15)
+            if value in (AgentConsts.UNBREAKABLE, AgentConsts.SEMI_UNBREAKABLE):
                 continue
 
             if playerX > 0 and playerY > 0:
@@ -87,7 +88,7 @@ class RandomMovement(State):
         """
 
         #self.updateTime += perception[AgentConsts.TIME]
-        if self.timeInRandom >= 100:
+        if self.timeInRandom >= 8:
             return "ExecutePlan"
         
         return self.id

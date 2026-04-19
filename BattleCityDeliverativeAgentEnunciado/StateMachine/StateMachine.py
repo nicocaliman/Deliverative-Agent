@@ -14,6 +14,8 @@ class StateMachine(State):
     #Metodo que se llama en cada actualización del estado
     #devuelve las acciones (actuadores) que el agente realiza
     def Update(self, perception, map, agent):
+        print("ESTOY EN EL STATE: ", self.curentState) # TODO
+
         actions = self.states[self.curentState].Update(perception, map, agent)
         newState = self.states[self.curentState].Transit(perception, map)
 

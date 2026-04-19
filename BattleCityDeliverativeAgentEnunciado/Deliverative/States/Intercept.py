@@ -75,11 +75,22 @@ class Intercept(State):
         dx = predictedX - agentX
         dy = predictedY - agentY
                 
-        if abs(dx) > abs(dy): move = AgentConsts.MOVE_RIGHT if dx > 0 else AgentConsts.MOVE_LEFT
-        else: move = AgentConsts.MOVE_DOWN if dy > 0 else AgentConsts.MOVE_UP
+        # Hay mas diferencia horizontal
+        if (abs(dx) > abs(dy)):
+            # El agente esta mas a la derecha
+            if dx < 0: move = AgentConsts.MOVE_LEFT
+            # El agente esta mas a la izquierda
+            else: move = AgentConsts.MOVE_RIGHT
+        # Hay mas diferenia vertical
+        elif (abs(dx) < abs(dy)):
+            # El agente esta por encima
+            if dy < 0: move = AgentConsts.MOVE_DOWN
+            # El agente esta por debajo
+            else: move = AgentConsts.MOVE_UP
+        else: move = AgentConsts.NO_MOVE
         
         dist = abs(playerX - agentX) + abs(playerY - agentY)
-        shot = dist <= 4
+        shot = dist >= 3
         
         self.timeInIntercept += 1
         
@@ -96,22 +107,14 @@ class Intercept(State):
         
         playerX = perception[AgentConsts.PLAYER_X]
         playerY = perception[AgentConsts.PLAYER_Y]
-        health = perception[AgentConsts.HEALTH]
-        agentX = perception[AgentConsts.AGENT_X] / 2
-        agentY = perception[AgentConsts.AGENT_Y] / 2
+        agentX = perception[AgentConsts.AGENT_X]
+        agentY = perception[AgentConsts.AGENT_Y]
         
-        if playerX == -1 or playerY == -1:
-            return "ExecutePlan"
-        
-        if self.timeInIntercept > 120:
-            return "ExecutePlan"
-        
-        if health <= 3:
-            return "Recover"
-        
-        playerX /= 2
-        playerY /= 2
         dist = abs(playerX - agentX) + abs(playerY - agentY)
+
+        if (playerX == -1 or playerY == -1) or (self.timeInIntercept > 10):
+            return "ExecutePlan"
+
         if dist <= 3:
             return "Attack"
         
