@@ -73,7 +73,7 @@ class Attack(State):
         commandX = perception[AgentConsts.COMMAND_CENTER_X]
         commandY = perception[AgentConsts.COMMAND_CENTER_Y]
         
-        if (playerX == -1 or playerY == -1) or (commandX == -1 or commandY == -1) or self.timeInAttack >= 8:
+        if (playerX == -1 or playerY == -1) or (commandX == -1 or commandY == -1) or self.timeInAttack > 5:
             return "ExecutePlan"
         
         return self.id

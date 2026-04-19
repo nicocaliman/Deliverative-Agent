@@ -112,7 +112,7 @@ class Intercept(State):
         
         dist = abs(playerX - agentX) + abs(playerY - agentY)
 
-        if (playerX == -1 or playerY == -1) or (self.timeInIntercept > 10):
+        if (playerX == -1 or playerY == -1) or (self.timeInIntercept > 5):
             return "ExecutePlan"
 
         if dist <= 3:

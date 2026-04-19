@@ -77,7 +77,7 @@ class Chase(State):
 
         dist = abs(playerX - agentX) + abs(playerY - agentY)
         
-        if (playerX == -1 or playerY == -1) or self.timeInChase > 10 or dist >= 8:
+        if (playerX == -1 or playerY == -1) or self.timeInChase > 5 or dist >= 8:
             return "ExecutePlan"
         
         elif dist <= 3:

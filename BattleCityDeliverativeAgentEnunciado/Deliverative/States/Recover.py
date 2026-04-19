@@ -80,7 +80,7 @@ class Recover(State):
         
         health = perception[AgentConsts.HEALTH]
         
-        if health >= 3 or self.timeInRecover >= 10:
+        if health >= 3 or self.timeInRecover > 8:
             return "ExecutePlan"
         
         return self.id

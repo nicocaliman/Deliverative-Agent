@@ -115,16 +115,16 @@ class ExecutePlan(State):
         elif dist <= 3 and health == 3 and (playerX != -1 and playerY != -1):
             return "Attack"
 
-        elif dist >= 5 and (abs(playerX - agentX) <= 2 or abs(playerY - agentY) <= 2) and (playerX != -1 and playerY != -1):
+        elif dist > 3 and (abs(playerX - agentX) <= 2 or abs(playerY - agentY) <= 2) and (playerX != -1 and playerY != -1):
             return "Chase"
         
-        elif dist >= 8 and (playerX != -1 and playerY != -1):
+        elif 16 > dist >= 10 and (playerX != -1 and playerY != -1):
             return "Intercept"
         
         elif health == 2 and dist <= 3 and (playerX != -1 and playerY != -1):
             return "BreakOut"
         
-        elif health == 1 and (life_x != -1 and life_y != -1):
+        elif health < 2 and (life_x != -1 and life_y != -1):
             return "Recover"
         
         elif self.noMovements > 5:

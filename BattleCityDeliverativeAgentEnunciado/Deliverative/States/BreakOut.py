@@ -112,7 +112,7 @@ class BreakOut(State):
             elif value in (AgentConsts.UNBREAKABLE, AgentConsts.SEMI_UNBREAKABLE):
                 blocked += 1
         
-        if blocked < 3 or self.timeInBreakout >= 10:
+        if blocked < 3 or self.timeInBreakout > 10:
             return "ExecutePlan"
         
         return self.id
